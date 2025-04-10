@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Table, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type Task } from '@/types';
-import { Head, router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 
 interface Props {
@@ -23,6 +23,9 @@ const deleteTask = (id: number) => {
 <template>
     <AppLayout>
         <Head title="Index" />
+        <div class="mt-4">
+            <Link :class="buttonVariants({ variant: 'outline' })" href="/tasks/create"> Create Task </Link>
+        </div>
         <Table class="mt-4">
             <TableHeader>
                 <TableRow>
