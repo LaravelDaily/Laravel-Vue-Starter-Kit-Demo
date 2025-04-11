@@ -41,6 +41,7 @@ const deleteTask = (id: number) => {
             <TableHeader>
                 <TableRow>
                     <TableHead>Task</TableHead>
+                    <TableHead>File</TableHead>
                     <TableHead class="w-[200px]">Status</TableHead>
                     <TableHead class="w-[200px]">Due Date</TableHead>
                     <TableHead class="w-[200px] text-right">Actions</TableHead>
@@ -48,6 +49,11 @@ const deleteTask = (id: number) => {
             </TableHeader>
             <TableRow v-for="task in tasks.data" :key="task.id">
                 <TableCell>{{ task.name }}</TableCell>
+                <TableCell>
+                    <a v-if="task.mediaFile" :href="task.mediaFile.original_url" target="_blank">
+                        <img :src="task.mediaFile.original_url" class="h-8 w-8" />
+                    </a>
+                </TableCell>
                 <TableCell :class="{ 'text-green-600': task.is_completed, 'text-red-700': !task.is_completed }">
                     {{ task.is_completed ? 'Completed' : 'In Progress' }}
                 </TableCell>

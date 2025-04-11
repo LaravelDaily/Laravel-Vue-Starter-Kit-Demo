@@ -9,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { cn } from '@/lib/utils';
 import { BreadcrumbItem, Task } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm } from '@inertiajs/vue3';
 import { DateFormatter, fromDate, getLocalTimeZone } from '@internationalized/date';
 import { CalendarIcon } from 'lucide-vue-next';
 
@@ -35,15 +35,33 @@ const form = useForm({
     name: task.name,
     is_completed: task.is_completed,
     due_date: task.due_date ? fromDate(new Date(task.due_date)) : null,
+    media: '',
 });
 
+const fileSelected = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) {
+        return;
+    }
+
+    form.media = file;
+};
+
 const submitForm = () => {
-    form.transform((data) => ({
-        ...data,
-        due_date: data.due_date ? data.due_date.toDate(getLocalTimeZone()) : null,
-    })).put(route('tasks.update', task.id), {
-        preserveScroll: true,
-    });
+    router.post(
+        route('tasks.update', task.id),
+        {
+            ...form.data(),
+            due_date: form.data().due_date ? form.data().due_date.toDate(getLocalTimeZone()) : null,
+            _method: 'PUT',
+        },
+        {
+            forceFormData: true,
+            preserveScroll: true,
+        },
+    );
 };
 </script>
 
@@ -87,6 +105,18 @@ const submitForm = () => {
                     <Switch id="is_completed" v-model="form.is_completed" class="mt-1" />
 
                     <InputError :message="form.errors.is_completed" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label htmlFor="name">Media</Label>
+
+                    <Input type="file" id="name" v-on:change="fileSelected($event)" class="mt-1 block w-full" />
+
+                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">{form.progress.percentage}%</progress>
+
+                    <InputError :message="form.errors.media" />
+
+                    <img v-if="task.mediaFile" :src="task.mediaFile.original_url" class="mx-auto mt-2 h-32 w-32 rounded-lg" />
                 </div>
 
                 <div class="flex items-center gap-4">

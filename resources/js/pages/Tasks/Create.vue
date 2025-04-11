@@ -25,12 +25,26 @@ const breadcrumbs: BreadcrumbItem[] = [
 const form = useForm({
     name: '',
     due_date: null,
+    media: '',
 });
+
+const fileSelected = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) {
+        return;
+    }
+
+    form.media = file;
+};
+
 const submitForm = () => {
     form.transform((data) => ({
         ...data,
         due_date: data.due_date ? data.due_date.toDate(getLocalTimeZone()) : null,
     })).post(route('tasks.store'), {
+        forceFormData: true,
         preserveScroll: true,
     });
 };
@@ -68,6 +82,16 @@ const submitForm = () => {
                     </Popover>
 
                     <InputError :message="form.errors.due_date" />
+                </div>
+
+                <div class="grid gap-2">
+                    <Label htmlFor="name">Media</Label>
+
+                    <Input type="file" id="name" v-on:change="fileSelected($event)" class="mt-1 block w-full" />
+
+                    <progress v-if="form.progress" :value="form.progress.percentage" max="100">{form.progress.percentage}%</progress>
+
+                    <InputError :message="form.errors.media" />
                 </div>
 
                 <div class="flex items-center gap-4">
