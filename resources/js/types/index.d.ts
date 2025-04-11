@@ -46,7 +46,16 @@ export interface Task {
     updated_at: string;
 }
 
-export interface PaginatedResponse<T = Task | null> {
+export interface TaskCategory {
+    id: number;
+    name: string;
+    tasks_count: number | null;
+    tasks: Task[] | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface PaginatedResponse<T = Task | TaskCategory | null> {
     current_page: number;
     data: T[];
     first_page_url: string;

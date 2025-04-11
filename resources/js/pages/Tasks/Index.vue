@@ -34,8 +34,9 @@ const deleteTask = (id: number) => {
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <Head title="Index" />
-        <div class="mt-4">
+        <div class="mt-4 flex gap-4">
             <Link :class="buttonVariants({ variant: 'outline' })" href="/tasks/create"> Create Task </Link>
+            <Link :class="buttonVariants({ variant: 'outline' })" href="/task-categories"> Manage Task Categories</Link>
         </div>
         <Table class="mt-4">
             <TableHeader>
