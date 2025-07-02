@@ -31,17 +31,17 @@ defineProps<Props>();
 const deleteCategory = (taskCategory: TaskCategory) => {
     if (taskCategory.tasks_count === 0) {
         if (confirm('Are you sure you want to delete this task category?')) {
-            router.delete(route('task-categories.destroy', taskCategory.id));
-            toast.success('Task Category deleted successfully');
+            router.delete(route('task-categories.destroy', taskCategory.id), {
+                onSuccess: () => toast.success('Task Category deleted successfully'),
+                onError: () => toast.error('Failed to delete task category'),
+            });
         }
     } else {
-        if (
-            confirm(
-                'This category has tasks assigned to it. Are you sure you want to delete it? This will also delete all the tasks assigned to this category.',
-            )
-        ) {
-            router.delete(route('task-categories.destroy', taskCategory.id));
-            toast.success('Task Category deleted successfully');
+        if (confirm('This category has tasks assigned to it. Are you sure you want to delete it? This will also delete all the tasks assigned to this category.')) {
+            router.delete(route('task-categories.destroy', taskCategory.id), {
+                onSuccess: () => toast.success('Task Category deleted successfully'),
+                onError: () => toast.error('Failed to delete task category'),
+            });
         }
     }
 };

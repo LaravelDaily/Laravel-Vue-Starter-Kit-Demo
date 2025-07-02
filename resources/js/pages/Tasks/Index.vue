@@ -28,8 +28,10 @@ const selectedCategories = props.selectedCategories ? props.selectedCategories :
 
 const deleteTask = (id: number) => {
     if (confirm('Are you sure you want to delete this task?')) {
-        router.delete(route('tasks.destroy', { id }));
-        toast.success('Task deleted successfully');
+        router.delete(route('tasks.destroy', { id }), {
+            onSuccess: () => toast.success('Task deleted successfully'),
+            onError: () => toast.error('Failed to delete task'),
+        });
     }
 };
 
