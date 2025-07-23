@@ -15,7 +15,7 @@ const df = new DateFormatter('en-US', {
 interface Props {
     tasks: PaginatedResponse<Task>;
     categories: TaskCategory[];
-    selectedCategories: [];
+    selectedCategories: string[];
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
